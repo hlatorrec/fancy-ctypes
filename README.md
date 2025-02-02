@@ -20,6 +20,29 @@ The only dependency is NumPy for array handling. The NumPy package is pretty muc
 
 Read the [documentation]() and find out if this package could be useful to you.
 
+### Installation and importing
+
+The package can be installed from PyPI
+
+```bash
+pip install fancy-ctypes
+```
+
+Alternatively, download this repository and run
+
+```bash
+pip install .
+```
+
+The package is imported as
+
+```python
+import fancytypes
+
+# For confort
+import fancytypes as ft
+```
+
 ### Platform
 
 The package is intended to be platform agnostic, although shared libraries are not. This is a tool that interfaces those libraries with Python, but users still need to build them first however they want.
