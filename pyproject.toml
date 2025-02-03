@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fancy-ctypes"
+dynamic = ["version"]
+authors = [
+  { name="hlatorrec", email="hlatorre@icm.csic.es" },
+]
+description = "Ctypes wrapper for easier Python interoperability with Fortran and C"
+keywords = ["python", "c", "cpp", "fortran", "python3", "interoperability",
+            "ctypes", "wrapper", "shared", "external", "library", "bindings", "binaries"]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.23"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Fortran",
+    "Programming Language :: C",
+    "License :: OSI Approved :: GPL-3.0 License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools]
+packages = ["fancytypes"]
+
+[tool.setuptools.dynamic]
+version = {attr = "fancytypes.__version__"}
+
+[project.urls]
+"Homepage" = "https://github.com/hlatorrec/fancy-ctypes"
+"Bug Tracker" = "https://github.com/hlatorrec/fancy-ctypes/issues"
