@@ -18,7 +18,7 @@ The only dependency is NumPy for array handling. The NumPy package is pretty muc
 
 ### Documentation
 
-Read the [documentation]() and find out if this package could be useful to you.
+Read the [documentation]() and find out if this package could be useful to you (in progress).
 
 ### Installation and importing
 
