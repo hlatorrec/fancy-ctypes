@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-fancytypes - Shared libraries in a fancy way
+FancyTypes - Shared libraries in a fancy way
 ============================================
 
-The `fancytypes <https://github.com/hlatorrec/fancytypes>`_ package is a 
+The `fancytypes <https://github.com/hlatorrec/fancy-ctypes>`_ package is a 
 `ctypes <https://docs.python.org/3/library/ctypes.html>`_ wrapper. It provides 
 **syntax sugar that makes it easier to include C and Fortran code in your 
 Python projects** through the use of shared libraries.
@@ -59,7 +59,7 @@ from fancytypes.sharedlib import load, interface
 
 
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 
 __all__ = ['int32', 'int64', 'int16', 'real32', 'real64', 'uint32', 'uint64',

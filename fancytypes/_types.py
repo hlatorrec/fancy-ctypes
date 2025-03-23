@@ -119,8 +119,11 @@ class FancyMeta(type):
             errmsg = 'array must be a NumPy array'
             raise TypeError(errmsg)
         
+        # Disgusting hack to avoid crash with zero-sized arrays
+        aux_arr = ndarray(1, dtype=array.dtype) if array.size == 0 else array
+        
         # Skip check for string or byte arrays, not too clean but w/e
-        if not isinstance(array[0], (str, bytes)) \
+        if not isinstance(aux_arr[0], (str, bytes)) \
             and array.dtype != cls._numpy_:
                 errmsg = 'array dtype does not match fancytypes type'
                 raise TypeError(errmsg)

@@ -11,10 +11,11 @@ corresponding member annotations**. Each of the types, :code:`struct` and
 .. autodecorator:: cstruct
 .. autodecorator:: cunion
 
-Structure and union types have a corresponding :code:`numpy.dtype` and **can be
-used as a datatype in NumPy arrays**. Pointer types are first converted to 
-:code:`ctypes.c_void_p`, which NumPy interprets as unsigned integers. This 
-conversion does not affect the actual structure or union type.
+Structure and union types with :code:`wrapped=True` have a corresponding 
+:code:`numpy.dtype` and **can be used as a datatype in NumPy arrays**. Pointer 
+types are first converted to :code:`ctypes.c_void_p`, which NumPy interprets as 
+unsigned integers. This conversion does not affect the actual structure or 
+union type.
 """
 
 
@@ -30,6 +31,25 @@ from numpy import dtype
 from fancytypes._types import FancyType
 
 
+
+def _numpy_type(typ):
+    '''Handle types to create NumPy compliant structures.
+    '''
+    
+    # It is a pointer type, NumPy sees uint64 (64-bit machines)
+    if hasattr(typ, 'contents'):
+        return c_void_p
+    
+    # Is a structured type, recursively do it just in case it has pointers
+    elif hasattr(typ, '_fields_'):
+        numpy_fields = [(var_, _numpy_type(typ_))
+                                                for var_, typ_ in typ._fields_]
+        return dtype(numpy_fields, align=True)
+    
+    # Is a basic type, just return it
+    else:
+        return typ
+    
 
 def _build_structured_type(cls, base, alias, wrapped):
     '''Wrap custom structured types. Make them NumPy friendly as well by 
@@ -49,8 +69,7 @@ def _build_structured_type(cls, base, alias, wrapped):
     
     type_name = f'{cls.__name__}_{base.__name__}'
     
-    numpy_fields = [(var, c_void_p)
-                            if hasattr(typ, 'contents') else (var, typ)
+    numpy_fields = [(var, _numpy_type(typ))
                                         for var, typ in ctypes_type._fields_]
     
     dict_ = {
