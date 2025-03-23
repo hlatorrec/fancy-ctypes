@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic types &mdash; FancyTypes 0.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=37f418d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Structures and unions" href="structure.html" />
+    <link rel="prev" title="Compiling a shared library" href="compiling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #734f96" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FancyTypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Before we start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="whyshared.html">Why shared libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling libraries</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fancytypes.types.pointer"><code class="docutils literal notranslate"><span class="pre">pointer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fancytypes.types.strarray"><code class="docutils literal notranslate"><span class="pre">strarray()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fancytypes.types.ptrarray"><code class="docutils literal notranslate"><span class="pre">ptrarray()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fancytypes.types.nparray"><code class="docutils literal notranslate"><span class="pre">nparray()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-classes">Type classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyInteger"><code class="docutils literal notranslate"><span class="pre">FancyInteger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyLongInteger"><code class="docutils literal notranslate"><span class="pre">FancyLongInteger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyShortInteger"><code class="docutils literal notranslate"><span class="pre">FancyShortInteger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyRealSingle"><code class="docutils literal notranslate"><span class="pre">FancyRealSingle</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyRealDouble"><code class="docutils literal notranslate"><span class="pre">FancyRealDouble</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyCharacter"><code class="docutils literal notranslate"><span class="pre">FancyCharacter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyLogical"><code class="docutils literal notranslate"><span class="pre">FancyLogical</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyUnsignedInteger"><code class="docutils literal notranslate"><span class="pre">FancyUnsignedInteger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyUnsignedLongInteger"><code class="docutils literal notranslate"><span class="pre">FancyUnsignedLongInteger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyUnsignedShortInteger"><code class="docutils literal notranslate"><span class="pre">FancyUnsignedShortInteger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyComplexSingle"><code class="docutils literal notranslate"><span class="pre">FancyComplexSingle</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fancytypes.types.FancyComplexDouble"><code class="docutils literal notranslate"><span class="pre">FancyComplexDouble</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Structures and unions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Library interfaces</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hlatorrec/fancy-ctypes/blob/main/LICENSE">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #734f96" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FancyTypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Basic types</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/basic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="basic-types">
+<span id="module-fancytypes.types"></span><span id="basic"></span><h1>Basic types<a class="headerlink" href="#basic-types" title="Link to this heading"></a></h1>
+<p>The basic or main <strong>types provided by the package are mainly those used in 
+numerical computation</strong>, such as the types covered by the 
+<code class="code docutils literal notranslate"><span class="pre">iso_fortran_env</span></code> intrinsic module introduced by the 2003 Fortran 
+standard. Other <strong>C types provided by the ctypes module still work with the 
+rest of the API</strong>, so they can be imported from there and used if necessary. 
+See 
+<a class="reference external" href="https://docs.python.org/3/library/ctypes.html#fundamental-data-types">here</a>.</p>
+<div class="hint admonition">
+<p class="admonition-title">Available types</p>
+<dl class="field-list simple">
+<dt class="field-odd">Integer<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Signed</em> <a class="reference internal" href="#fancytypes.types.FancyShortInteger" title="fancytypes.types.FancyShortInteger"><code class="xref py py-func docutils literal notranslate"><span class="pre">16-bit</span></code></a> - 
+<a class="reference internal" href="#fancytypes.types.FancyInteger" title="fancytypes.types.FancyInteger"><code class="xref py py-func docutils literal notranslate"><span class="pre">32-bit</span></code></a> - <a class="reference internal" href="#fancytypes.types.FancyLongInteger" title="fancytypes.types.FancyLongInteger"><code class="xref py py-func docutils literal notranslate"><span class="pre">64-bit</span></code></a> /
+<em>Unsigned</em> <a class="reference internal" href="#fancytypes.types.FancyUnsignedShortInteger" title="fancytypes.types.FancyUnsignedShortInteger"><code class="xref py py-func docutils literal notranslate"><span class="pre">16-bit</span></code></a> - 
+<a class="reference internal" href="#fancytypes.types.FancyUnsignedInteger" title="fancytypes.types.FancyUnsignedInteger"><code class="xref py py-func docutils literal notranslate"><span class="pre">32-bit</span></code></a> - 
+<a class="reference internal" href="#fancytypes.types.FancyUnsignedLongInteger" title="fancytypes.types.FancyUnsignedLongInteger"><code class="xref py py-func docutils literal notranslate"><span class="pre">64-bit</span></code></a></p>
+</dd>
+<dt class="field-even">Real/Float<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#fancytypes.types.FancyRealSingle" title="fancytypes.types.FancyRealSingle"><code class="xref py py-func docutils literal notranslate"><span class="pre">32-bit</span></code></a> - <a class="reference internal" href="#fancytypes.types.FancyRealDouble" title="fancytypes.types.FancyRealDouble"><code class="xref py py-func docutils literal notranslate"><span class="pre">64-bit</span></code></a></p>
+</dd>
+<dt class="field-odd">Complex<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#fancytypes.types.FancyComplexSingle" title="fancytypes.types.FancyComplexSingle"><code class="xref py py-func docutils literal notranslate"><span class="pre">64-bit</span></code></a> - 
+<a class="reference internal" href="#fancytypes.types.FancyComplexDouble" title="fancytypes.types.FancyComplexDouble"><code class="xref py py-func docutils literal notranslate"><span class="pre">128-bit</span></code></a> (as defined in 
+<code class="code docutils literal notranslate"><span class="pre">complex.h</span></code> by the C99 standard)</p>
+</dd>
+<dt class="field-even">Logical/Boolean<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#fancytypes.types.FancyLogical" title="fancytypes.types.FancyLogical"><code class="xref py py-func docutils literal notranslate"><span class="pre">8-bit</span></code></a></p>
+</dd>
+<dt class="field-odd">Character<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#fancytypes.types.FancyCharacter" title="fancytypes.types.FancyCharacter"><code class="xref py py-func docutils literal notranslate"><span class="pre">8-bit</span></code></a></p>
+</dd>
+</dl>
+<p>The aliases for these types are listed below, in the <a class="reference internal" href="#classes"><span class="std std-ref">type classes</span></a> section. All aliases are imported into the namespace of the 
+module.</p>
+</div>
+<p>In addition to these, <strong>pointer and array types can be created from basic 
+types</strong> using the <a class="reference internal" href="#fancytypes.types.pointer" title="fancytypes.types.pointer"><code class="xref py py-func docutils literal notranslate"><span class="pre">pointer()</span></code></a> function or multipliying them by the 
+desired array length, respectively. C-style <a class="reference internal" href="#array"><span class="std std-ref">array declaration</span></a> 
+can be mimicked by indexing type classes, which looks way prettier.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fancytypes.types.pointer">
+<span class="sig-name descname"><span class="pre">pointer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancytypes/types.html#pointer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.pointer" title="Link to this definition"></a></dt>
+<dd><p>Return a pointer class. These <strong>pointer classes are used to declare 
+pointer arguments in procedure interfaces</strong>. For pointers to actual 
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">ctypes</span></code> variable instances use <code class="xref py py-func docutils literal notranslate"><span class="pre">cpointer()</span></code> instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>typ</strong> – Type to get a pointer class from</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pointer class</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fancytypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ft</span>
+
+<span class="n">my_pointer</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">real64</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_pointer</span><span class="p">)</span> <span class="c1"># Prints &quot;fancytypes.ptr_real64&quot;</span>
+
+<span class="c1"># These can be chained</span>
+<span class="n">my_pointer_to_a_pointer</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="n">my_pointer</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_pointer_to_a_pointer</span><span class="p">)</span> <span class="c1"># Prints &quot;fancytypes.ptr_ptr_real64&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="note admonition" id="array">
+<p class="admonition-title">Array types</p>
+<p>To create an array class, simply do:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fancytypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ft</span>
+
+<span class="n">my_array</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">ft</span><span class="o">.</span><span class="n">real64</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_array</span><span class="p">)</span> <span class="c1"># Prints &quot;fancytypes.real64_array_5&quot;</span>
+
+<span class="c1"># C-style array declaration is also supported</span>
+<span class="n">my_char_array</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">character</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_char_array</span><span class="p">)</span> <span class="c1"># Prints &quot;fancytypes.character_array_8&quot;</span>
+</pre></div>
+</div>
+<p>It is advised to <strong>use NumPy arrays whenever posible instead ctypes 
+arrays</strong>, but the package provides them nonetheless.</p>
+</div></blockquote>
+</div>
+<p>The package provides some functions to make interoperability easier:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#fancytypes.types.strarray" title="fancytypes.types.strarray"><code class="xref py py-func docutils literal notranslate"><span class="pre">strarray()</span></code></a> - Create NumPy character arrays from Python strings</p></li>
+<li><p><a class="reference internal" href="#fancytypes.types.ptrarray" title="fancytypes.types.ptrarray"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptrarray()</span></code></a> - Create an array of pointers to NumPy arrays on a 
+list</p></li>
+<li><p><a class="reference internal" href="#fancytypes.types.nparray" title="fancytypes.types.nparray"><code class="xref py py-func docutils literal notranslate"><span class="pre">nparray()</span></code></a> - Explicitly declare procedure arguments as NumPy 
+arrays</p></li>
+</ul>
+</div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="fancytypes.types.strarray">
+<span class="sig-name descname"><span class="pre">strarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancytypes/types.html#strarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.strarray" title="Link to this definition"></a></dt>
+<dd><p>Return a NumPy character array from a Python string or a list of 
+strings. For the later, the longest string sets the length of the array 
+“rows” that store the individual strings, padding the shorter strings.</p>
+<div class="note admonition">
+<p class="admonition-title">Character encoding</p>
+<p>Unicode outputs are explicitly disabled to ensure 8-bit elements. This 
+function was originally meant for paths, so it will not fit all  
+usecases. ASCII outside of the minimal 8-bit is not supported.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>items</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – String or list/tuple of strings</p></li>
+<li><p><strong>strlen</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>) – Specify a string length, default is the longest required</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NumPy character array of 8-bit characters</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fancytypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ft</span>
+
+<span class="n">my_strings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;data.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;some_text.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;user.cfg&#39;</span><span class="p">]</span>
+<span class="n">my_array</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">strarray</span><span class="p">(</span><span class="n">my_strings</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_array</span><span class="p">)</span> <span class="c1"># Prints &quot;[b&#39;data.dat&#39;, b&#39;some_text.txt&#39;, b&#39;user.cfg&#39;]&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fancytypes.types.ptrarray">
+<span class="sig-name descname"><span class="pre">ptrarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancytypes/types.html#ptrarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.ptrarray" title="Link to this definition"></a></dt>
+<dd><p>Return an array of pointers to NumPy arrays on a list. This can be used 
+to pass an arbitrary number of arrays to a procedure. These arrays do not 
+have to be contiguous in memory, which forces us to pass them like this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arrays</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>) – List/tuple of arrays</p></li>
+<li><p><strong>typ</strong> – Type to make the pointers to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctypes</span></code> array instance</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">fancytypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ft</span>
+
+<span class="n">my_array_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">my_array_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">my_array_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">my_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">my_array_1</span><span class="p">,</span> <span class="n">my_array_2</span><span class="p">,</span> <span class="n">my_array_3</span><span class="p">]</span>
+
+<span class="n">my_pointer_array</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">ptrarray</span><span class="p">(</span><span class="n">my_arrays</span><span class="p">,</span> <span class="n">ft</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_pointer_array</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># Prints [1, 2, 3, 4, 5]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_pointer_array</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># Prints [6, 7, 8, 9, 10]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_pointer_array</span><span class="p">[</span><span class="mi">2</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># Prints [11, 12, 13, 14, 15]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fancytypes.types.nparray">
+<span class="sig-name descname"><span class="pre">nparray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancytypes/types.html#nparray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.nparray" title="Link to this definition"></a></dt>
+<dd><p>Return a <code class="xref py py-class docutils literal notranslate"><span class="pre">ndpointer</span></code> object from 
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.ctypeslib</span></code>. These can be used in procedure interfaces to 
+explicitly declare NumPy arrays as arguments. This function is a wrapper 
+around <a class="reference external" href="https://numpy.org/doc/stable/reference/routines.ctypeslib.html#numpy.ctypeslib.ndpointer">ndpointer</a>,
+and its optional keyword arguments are described there.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>typ</strong> – Type of the array</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NumPy ndpointer object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndpointer</span></code></p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fancytypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ft</span>
+
+<span class="n">my_ndpointer</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">nparray</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">real64</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_ndpointer</span><span class="p">)</span> <span class="c1"># Prints &quot;numpy.ctypeslib.ndpointer_&lt;f8&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p><em>Placeholder text for references to documentation that I will write eventually</em></p>
+<section id="type-classes">
+<span id="classes"></span><h2>Type classes<a class="headerlink" href="#type-classes" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyInteger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyInteger</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyInteger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyInteger" title="Link to this definition"></a></dt>
+<dd><p>Class for 32-bit integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>int32</em></p></li>
+<li><p><em>integer</em></p></li>
+<li><p><em>int</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyLongInteger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyLongInteger</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyLongInteger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyLongInteger" title="Link to this definition"></a></dt>
+<dd><p>Class for 64-bit integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>int64</em></p></li>
+<li><p><em>long</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyShortInteger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyShortInteger</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyShortInteger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyShortInteger" title="Link to this definition"></a></dt>
+<dd><p>Class for 16-bit integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>int16</em></p></li>
+<li><p><em>short</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyRealSingle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyRealSingle</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyRealSingle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyRealSingle" title="Link to this definition"></a></dt>
+<dd><p>Class for 32-bit real numbers, aka floats or singles (like me).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>real32</em></p></li>
+<li><p><em>float32</em></p></li>
+<li><p><em>single</em></p></li>
+<li><p><em>sp</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyRealDouble">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyRealDouble</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyRealDouble"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyRealDouble" title="Link to this definition"></a></dt>
+<dd><p>Class for 64-bit real numbers, aka floats-64 or doubles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>real64</em></p></li>
+<li><p><em>float64</em></p></li>
+<li><p><em>double</em></p></li>
+<li><p><em>dp</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyCharacter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyCharacter</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyCharacter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyCharacter" title="Link to this definition"></a></dt>
+<dd><p>Class for 8-bit characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>character</em></p></li>
+<li><p><em>char</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyLogical">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyLogical</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyLogical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyLogical" title="Link to this definition"></a></dt>
+<dd><p>Class for 8-bit logical values, aka booleans or bools.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>logical</em></p></li>
+<li><p><em>boolean</em></p></li>
+<li><p><em>bool</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyUnsignedInteger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyUnsignedInteger</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyUnsignedInteger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyUnsignedInteger" title="Link to this definition"></a></dt>
+<dd><p>Class for 32-bit unsigned integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>uint32</em></p></li>
+<li><p><em>uint</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyUnsignedLongInteger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyUnsignedLongInteger</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyUnsignedLongInteger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyUnsignedLongInteger" title="Link to this definition"></a></dt>
+<dd><p>Class for 64-bit unsigned integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>uint64</em></p></li>
+<li><p><em>ulong</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyUnsignedShortInteger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyUnsignedShortInteger</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyUnsignedShortInteger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyUnsignedShortInteger" title="Link to this definition"></a></dt>
+<dd><p>Class for 16-bit unsigned integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>uint16</em></p></li>
+<li><p><em>ushort</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyComplexSingle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyComplexSingle</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyComplexSingle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyComplexSingle" title="Link to this definition"></a></dt>
+<dd><p>Class for 64-bit complex numbers (two single precision real numbers).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>complex64</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fancytypes.types.FancyComplexDouble">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FancyComplexDouble</span></span><a class="reference internal" href="_modules/fancytypes/types.html#FancyComplexDouble"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.types.FancyComplexDouble" title="Link to this definition"></a></dt>
+<dd><p>Class for 128-bit complex numbers (two double precision real numbers).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Aliases<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>complex128</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compiling.html" class="btn btn-neutral float-left" title="Compiling a shared library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="structure.html" class="btn btn-neutral float-right" title="Structures and unions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, hlatorrec.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

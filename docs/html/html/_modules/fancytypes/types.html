@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fancytypes.types &mdash; FancyTypes 0.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=37f418d5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #734f96" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FancyTypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Before we start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../whyshared.html">Why shared libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiling.html">Compiling libraries</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../basic.html">Basic types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../structure.html">Structures and unions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interface.html">Library interfaces</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hlatorrec/fancy-ctypes/blob/main/LICENSE">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #734f96" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FancyTypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fancytypes.types</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fancytypes.types</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Basic types</span>
+<span class="sd">===========</span>
+
+<span class="sd">The basic or main **types provided by the package are mainly those used in </span>
+<span class="sd">numerical computation**, such as the types covered by the </span>
+<span class="sd">:code:`iso_fortran_env` intrinsic module introduced by the 2003 Fortran </span>
+<span class="sd">standard. Other **C types provided by the ctypes module still work with the </span>
+<span class="sd">rest of the API**, so they can be imported from there and used if necessary. </span>
+<span class="sd">See </span>
+<span class="sd">`here &lt;https://docs.python.org/3/library/ctypes.html#fundamental-data-types&gt;`_.</span>
+
+<span class="sd">.. admonition:: Available types</span>
+<span class="sd">    :class: hint</span>
+<span class="sd">    </span>
+<span class="sd">    :Integer:</span>
+<span class="sd">        *Signed* :py:func:`16-bit&lt;FancyShortInteger&gt;` - </span>
+<span class="sd">        :py:func:`32-bit&lt;FancyInteger&gt;` - :py:func:`64-bit&lt;FancyLongInteger&gt;` /</span>
+<span class="sd">        *Unsigned* :py:func:`16-bit&lt;FancyUnsignedShortInteger&gt;` - </span>
+<span class="sd">        :py:func:`32-bit&lt;FancyUnsignedInteger&gt;` - </span>
+<span class="sd">        :py:func:`64-bit&lt;FancyUnsignedLongInteger&gt;`</span>
+<span class="sd">    </span>
+<span class="sd">    :Real/Float:</span>
+<span class="sd">        :py:func:`32-bit&lt;FancyRealSingle&gt;` - :py:func:`64-bit&lt;FancyRealDouble&gt;`</span>
+<span class="sd">    </span>
+<span class="sd">    :Complex:</span>
+<span class="sd">        :py:func:`64-bit&lt;FancyComplexSingle&gt;` - </span>
+<span class="sd">        :py:func:`128-bit&lt;FancyComplexDouble&gt;` (as defined in </span>
+<span class="sd">        :code:`complex.h` by the C99 standard)</span>
+<span class="sd">    </span>
+<span class="sd">    :Logical/Boolean:</span>
+<span class="sd">        :py:func:`8-bit&lt;FancyLogical&gt;`</span>
+<span class="sd">    </span>
+<span class="sd">    :Character:</span>
+<span class="sd">        :py:func:`8-bit&lt;FancyCharacter&gt;`</span>
+<span class="sd">    </span>
+<span class="sd">    The aliases for these types are listed below, in the :ref:`type classes </span>
+<span class="sd">    &lt;classes&gt;` section. All aliases are imported into the namespace of the </span>
+<span class="sd">    module.</span>
+<span class="sd">    </span>
+<span class="sd">In addition to these, **pointer and array types can be created from basic </span>
+<span class="sd">types** using the :py:func:`pointer` function or multipliying them by the </span>
+<span class="sd">desired array length, respectively. C-style :ref:`array declaration &lt;array&gt;` </span>
+<span class="sd">can be mimicked by indexing type classes, which looks way prettier.</span>
+
+<span class="sd">.. autofunction:: pointer</span>
+
+<span class="sd">.. _array:</span>
+
+<span class="sd">.. admonition:: Array types</span>
+<span class="sd">    :class: note</span>
+<span class="sd">    </span>
+<span class="sd">    To create an array class, simply do:</span>
+<span class="sd">        </span>
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">        </span>
+<span class="sd">            import fancytypes as ft</span>
+<span class="sd">            </span>
+<span class="sd">            my_array = 5 * ft.real64</span>
+<span class="sd">            print(my_array) # Prints &quot;fancytypes.real64_array_5&quot;</span>
+<span class="sd">            </span>
+<span class="sd">            # C-style array declaration is also supported</span>
+<span class="sd">            my_char_array = ft.character[8]</span>
+<span class="sd">            print(my_char_array) # Prints &quot;fancytypes.character_array_8&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        It is advised to **use NumPy arrays whenever posible instead ctypes </span>
+<span class="sd">        arrays**, but the package provides them nonetheless.</span>
+
+<span class="sd">The package provides some functions to make interoperability easier:</span>
+<span class="sd">    </span>
+<span class="sd">    * :py:func:`strarray` - Create NumPy character arrays from Python strings</span>
+<span class="sd">    * :py:func:`ptrarray` - Create an array of pointers to NumPy arrays on a </span>
+<span class="sd">      list</span>
+<span class="sd">    * :py:func:`nparray` - Explicitly declare procedure arguments as NumPy </span>
+<span class="sd">      arrays</span>
+
+
+<span class="sd">.. autofunction:: strarray</span>
+<span class="sd">.. autofunction:: ptrarray</span>
+<span class="sd">.. autofunction:: nparray</span>
+
+<span class="sd">*Placeholder text for references to documentation that I will write eventually*</span>
+
+<span class="sd">.. _classes:</span>
+
+<span class="sd">Type classes</span>
+<span class="sd">------------</span>
+
+<span class="sd">.. autoclass:: FancyInteger()</span>
+<span class="sd">.. autoclass:: FancyLongInteger()</span>
+<span class="sd">.. autoclass:: FancyShortInteger()</span>
+<span class="sd">.. autoclass:: FancyRealSingle()</span>
+<span class="sd">.. autoclass:: FancyRealDouble()</span>
+<span class="sd">.. autoclass:: FancyCharacter()</span>
+<span class="sd">.. autoclass:: FancyLogical()</span>
+<span class="sd">.. autoclass:: FancyUnsignedInteger()</span>
+<span class="sd">.. autoclass:: FancyUnsignedLongInteger()</span>
+<span class="sd">.. autoclass:: FancyUnsignedShortInteger()</span>
+<span class="sd">.. autoclass:: FancyComplexSingle()</span>
+<span class="sd">.. autoclass:: FancyComplexDouble()</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ctypes</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">c_int</span><span class="p">,</span> <span class="n">c_longlong</span><span class="p">,</span> <span class="n">c_short</span><span class="p">,</span> <span class="n">c_float</span><span class="p">,</span> <span class="n">c_double</span><span class="p">,</span> <span class="n">c_char</span><span class="p">,</span>
+                    <span class="n">c_bool</span><span class="p">,</span> <span class="n">c_uint</span><span class="p">,</span> <span class="n">c_ulonglong</span><span class="p">,</span> <span class="n">c_ushort</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">)</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">int32</span><span class="p">,</span> <span class="n">int64</span><span class="p">,</span> <span class="n">int16</span><span class="p">,</span> <span class="n">float32</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">uint32</span><span class="p">,</span> <span class="n">uint64</span><span class="p">,</span>
+                   <span class="n">uint16</span><span class="p">,</span> <span class="n">complex64</span><span class="p">,</span> <span class="n">complex128</span><span class="p">,</span> <span class="n">char</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.ctypeslib</span><span class="w"> </span><span class="kn">import</span> <span class="n">ndpointer</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fancytypes._types</span><span class="w"> </span><span class="kn">import</span> <span class="n">FancyMeta</span><span class="p">,</span> <span class="n">FancyType</span><span class="p">,</span> <span class="n">ComplexType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fancytypes.ctypes</span><span class="w"> </span><span class="kn">import</span> <span class="n">single_complex</span><span class="p">,</span> <span class="n">double_complex</span>
+
+
+
+<div class="viewcode-block" id="FancyInteger">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyInteger">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyInteger</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 32-bit integers.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *int32*</span>
+<span class="sd">        * *integer*</span>
+<span class="sd">        * *int*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_int</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">int32</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;int32&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyLongInteger">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyLongInteger">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyLongInteger</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 64-bit integers.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *int64*</span>
+<span class="sd">        * *long*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_longlong</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">int64</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;int64&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyShortInteger">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyShortInteger">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyShortInteger</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 16-bit integers.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *int16*</span>
+<span class="sd">        * *short*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_short</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">int16</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;int16&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyRealSingle">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyRealSingle">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyRealSingle</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 32-bit real numbers, aka floats or singles (like me).</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *real32*</span>
+<span class="sd">        * *float32*</span>
+<span class="sd">        * *single*</span>
+<span class="sd">        * *sp*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_float</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">float32</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;real32&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyRealDouble">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyRealDouble">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyRealDouble</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 64-bit real numbers, aka floats-64 or doubles.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *real64*</span>
+<span class="sd">        * *float64*</span>
+<span class="sd">        * *double*</span>
+<span class="sd">        * *dp*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_double</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">float64</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;real64&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyCharacter">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyCharacter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyCharacter</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 8-bit characters.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *character*</span>
+<span class="sd">        * *char*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_char</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="s1">&#39;|S&#39;</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;character&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyLogical">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyLogical">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyLogical</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 8-bit logical values, aka booleans or bools.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *logical*</span>
+<span class="sd">        * *boolean*</span>
+<span class="sd">        * *bool*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_bool</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="nb">bool</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;logical&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyUnsignedInteger">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyUnsignedInteger">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyUnsignedInteger</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 32-bit unsigned integers.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *uint32*</span>
+<span class="sd">        * *uint*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_uint</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">uint32</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;uint32&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyUnsignedLongInteger">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyUnsignedLongInteger">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyUnsignedLongInteger</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 64-bit unsigned integers.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *uint64*</span>
+<span class="sd">        * *ulong*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_ulonglong</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">uint64</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;uint64&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyUnsignedShortInteger">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyUnsignedShortInteger">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyUnsignedShortInteger</span><span class="p">(</span><span class="n">FancyType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 16-bit unsigned integers.</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *uint16*</span>
+<span class="sd">        * *ushort*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">c_ushort</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">uint16</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;uint16&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyComplexSingle">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyComplexSingle">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyComplexSingle</span><span class="p">(</span><span class="n">ComplexType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 64-bit complex numbers (two single precision real numbers).</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *complex64*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">single_complex</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">complex64</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;complex64&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="FancyComplexDouble">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.FancyComplexDouble">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FancyComplexDouble</span><span class="p">(</span><span class="n">ComplexType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class for 128-bit complex numbers (two double precision real numbers).</span>
+<span class="sd">    </span>
+<span class="sd">    :Aliases:</span>
+<span class="sd">        * *complex128*</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">_ctype_</span> <span class="o">=</span> <span class="n">double_complex</span>
+    <span class="n">_numpy_</span> <span class="o">=</span> <span class="n">complex128</span>
+    <span class="n">_alias_</span> <span class="o">=</span> <span class="s1">&#39;complex128&#39;</span></div>
+
+
+
+
+<div class="viewcode-block" id="pointer">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.pointer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pointer</span><span class="p">(</span><span class="n">typ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Return a pointer class. These **pointer classes are used to declare </span>
+<span class="sd">    pointer arguments in procedure interfaces**. For pointers to actual </span>
+<span class="sd">    :py:mod:`ctypes` variable instances use :py:func:`cpointer` instead.</span>
+<span class="sd">    </span>
+<span class="sd">    :param typ: Type to get a pointer class from</span>
+<span class="sd">    :return: Pointer class</span>
+<span class="sd">    </span>
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">        </span>
+<span class="sd">        import fancytypes as ft</span>
+<span class="sd">        </span>
+<span class="sd">        my_pointer = ft.pointer(ft.real64)</span>
+<span class="sd">        print(my_pointer) # Prints &quot;fancytypes.ptr_real64&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        # These can be chained</span>
+<span class="sd">        my_pointer_to_a_pointer = ft.pointer(my_pointer)</span>
+<span class="sd">        print(my_pointer_to_a_pointer) # Prints &quot;fancytypes.ptr_ptr_real64&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Current workaround solution to let struct/union pointers through</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="s1">&#39;_fields_&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="s1">&#39;_ctype_&#39;</span><span class="p">):</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="s1">&#39;fancytypes.pointer must receive a fancytypes type&#39;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">typ</span><span class="o">.</span><span class="n">_pointer</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="strarray">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.strarray">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">strarray</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">strlen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Return a NumPy character array from a Python string or a list of </span>
+<span class="sd">    strings. For the later, the longest string sets the length of the array </span>
+<span class="sd">    &quot;rows&quot; that store the individual strings, padding the shorter strings.</span>
+<span class="sd">    </span>
+<span class="sd">    .. admonition:: Character encoding</span>
+<span class="sd">        :class: note</span>
+<span class="sd">        </span>
+<span class="sd">        Unicode outputs are explicitly disabled to ensure 8-bit elements. This </span>
+<span class="sd">        function was originally meant for paths, so it will not fit all  </span>
+<span class="sd">        usecases. ASCII outside of the minimal 8-bit is not supported.</span>
+<span class="sd">    </span>
+<span class="sd">    :param items: String or list/tuple of strings</span>
+<span class="sd">    :type items: :py:class:`str`, :py:class:`list` or :py:class:`tuple`</span>
+<span class="sd">    :param strlen: Specify a string length, default is the longest required</span>
+<span class="sd">    :type strlen: :py:class:`int`, *optional*</span>
+<span class="sd">    :return: NumPy character array of 8-bit characters</span>
+<span class="sd">    :rtype: :py:class:`numpy.ndarray`</span>
+<span class="sd">    </span>
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">        </span>
+<span class="sd">        import fancytypes as ft</span>
+<span class="sd">        </span>
+<span class="sd">        my_strings = [&#39;data.dat&#39;, &#39;some_text.txt&#39;, &#39;user.cfg&#39;]</span>
+<span class="sd">        my_array = ft.strarray(my_strings)</span>
+<span class="sd">        print(my_array) # Prints &quot;[b&#39;data.dat&#39;, b&#39;some_text.txt&#39;, b&#39;user.cfg&#39;]&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">(</span><span class="n">items</span><span class="p">,)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="s1">&#39;items must be a list or tuple of strings&#39;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+    
+    <span class="n">asarray</span> <span class="o">=</span> <span class="n">char</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">itemsize</span><span class="o">=</span><span class="n">strlen</span><span class="p">,</span> <span class="n">unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">asarray</span></div>
+
+
+
+
+<div class="viewcode-block" id="ptrarray">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.ptrarray">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ptrarray</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Return an array of pointers to NumPy arrays on a list. This can be used </span>
+<span class="sd">    to pass an arbitrary number of arrays to a procedure. These arrays do not </span>
+<span class="sd">    have to be contiguous in memory, which forces us to pass them like this.</span>
+<span class="sd">    </span>
+<span class="sd">    :param arrays: List/tuple of arrays</span>
+<span class="sd">    :type arrays: :py:class:`list` or :py:class:`tuple`</span>
+<span class="sd">    :param typ: Type to make the pointers to</span>
+<span class="sd">    :return: :py:mod:`ctypes` array instance</span>
+<span class="sd">    </span>
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">        </span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import fancytypes as ft</span>
+<span class="sd">        </span>
+<span class="sd">        my_array_1 = np.array([1, 2, 3, 4, 5], dtype=np.int32)</span>
+<span class="sd">        my_array_2 = np.array([6, 7, 8, 9, 10], dtype=np.int32)</span>
+<span class="sd">        my_array_3 = np.array([11, 12, 13, 14, 15], dtype=np.int32)</span>
+<span class="sd">        my_arrays = [my_array_1, my_array_2, my_array_3]</span>
+<span class="sd">        </span>
+<span class="sd">        my_pointer_array = ft.ptrarray(my_arrays, ft.int32)</span>
+<span class="sd">        print(my_pointer_array[0][:5]) # Prints [1, 2, 3, 4, 5]</span>
+<span class="sd">        print(my_pointer_array[1][:5]) # Prints [6, 7, 8, 9, 10]</span>
+<span class="sd">        print(my_pointer_array[2][:5]) # Prints [11, 12, 13, 14, 15]</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="s1">&#39;arrays must be a list or tuple of NumPy arrays&#39;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span> <span class="ow">is</span> <span class="n">FancyMeta</span><span class="p">:</span>
+        <span class="n">this_class</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;dtype must be a fancytypes type, got </span><span class="si">{</span><span class="n">this_class</span><span class="si">}</span><span class="s1"> instead&#39;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+    
+    <span class="n">array_type</span> <span class="o">=</span> <span class="n">pointer</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">arrays</span><span class="p">)</span>
+    <span class="n">ptr_array</span> <span class="o">=</span> <span class="n">array_type</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">ptr_array</span></div>
+
+
+
+<div class="viewcode-block" id="nparray">
+<a class="viewcode-back" href="../../basic.html#fancytypes.types.nparray">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">nparray</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Return a :py:class:`~numpy.ctypeslib.ndpointer` object from </span>
+<span class="sd">    :py:mod:`numpy.ctypeslib`. These can be used in procedure interfaces to </span>
+<span class="sd">    explicitly declare NumPy arrays as arguments. This function is a wrapper </span>
+<span class="sd">    around `ndpointer </span>
+<span class="sd">    &lt;https://numpy.org/doc/stable/reference/routines.ctypeslib.html#numpy.ctypeslib.ndpointer&gt;`_,</span>
+<span class="sd">    and its optional keyword arguments are described there.</span>
+<span class="sd">    </span>
+<span class="sd">    :param typ: Type of the array</span>
+<span class="sd">    :return: NumPy ndpointer object</span>
+<span class="sd">    :rtype: :py:class:`~numpy.ctypeslib.ndpointer`</span>
+<span class="sd">    </span>
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">        </span>
+<span class="sd">        import fancytypes as ft</span>
+<span class="sd">        </span>
+<span class="sd">        my_ndpointer = ft.nparray(ft.real64)</span>
+<span class="sd">        print(my_ndpointer) # Prints &quot;numpy.ctypeslib.ndpointer_&lt;f8&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span> <span class="ow">is</span> <span class="n">FancyMeta</span><span class="p">:</span>
+        <span class="n">this_class</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;dtype must be a fancytypes type, got </span><span class="si">{</span><span class="n">this_class</span><span class="si">}</span><span class="s1"> instead&#39;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+    
+    <span class="n">ctype</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">_ctype_</span>
+    
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ctype</span><span class="p">,</span> <span class="s1">&#39;_type_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctype</span><span class="o">.</span><span class="n">_type_</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="s1">&#39;NumPy array arguments can only be of basic types&#39;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">ndpointer</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">_numpy_</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="n">ndim</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">flags</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, hlatorrec.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

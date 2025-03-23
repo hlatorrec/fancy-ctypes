@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library interfaces &mdash; FancyTypes 0.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=37f418d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="install.html" />
+    <link rel="prev" title="Structures and unions" href="structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #734f96" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FancyTypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Before we start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="whyshared.html">Why shared libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling libraries</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic.html">Basic types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Structures and unions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Library interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fancytypes.sharedlib.SharedLibrary"><code class="docutils literal notranslate"><span class="pre">SharedLibrary</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fancytypes.sharedlib.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fancytypes.sharedlib.interface"><code class="docutils literal notranslate"><span class="pre">interface()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hlatorrec/fancy-ctypes/blob/main/LICENSE">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #734f96" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FancyTypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Library interfaces</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/interface.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="library-interfaces">
+<span id="module-fancytypes.sharedlib"></span><span id="interface"></span><h1>Library interfaces<a class="headerlink" href="#library-interfaces" title="Link to this heading"></a></h1>
+<p>After loading a shared library, its <strong>procedures must be interfaced to make 
+them available from the Python side</strong>. Shared libraries are loaded using the 
+<a class="reference internal" href="#fancytypes.sharedlib.load" title="fancytypes.sharedlib.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">load()</span></code></a> function, which returns a <a class="reference internal" href="#fancytypes.sharedlib.SharedLibrary" title="fancytypes.sharedlib.SharedLibrary"><code class="xref py py-class docutils literal notranslate"><span class="pre">SharedLibrary</span></code></a> instance. 
+Procedures can be interfaced using the <a class="reference internal" href="#fancytypes.sharedlib.interface" title="fancytypes.sharedlib.interface"><code class="xref py py-func docutils literal notranslate"><span class="pre">interface()</span></code></a> function.</p>
+<p>Now follows a minimal example of C code that we can interface from Python, with  
+arguments chosen to cover typical cases. Function and class documentation 
+<a class="reference internal" href="#docu"><span class="std std-ref">just below</span></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Sample structure that stores seismic station information</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">longitude</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">latitude</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">elevation</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">network</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">station</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">_Bool</span><span class="w"> </span><span class="n">operational</span><span class="p">;</span><span class="w"> </span><span class="c1">// OCD safety (it would get padded anyways)</span>
+<span class="p">}</span><span class="w"> </span><span class="n">t_Station</span><span class="p">;</span>
+
+<span class="c1">// Sample function prototype that will be interfaced</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">do_something</span><span class="w"> </span><span class="p">(</span><span class="n">t_Station</span><span class="w"> </span><span class="o">*</span><span class="n">station</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nsamp</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>When building an interface, we will assume that <code class="code docutils literal notranslate"><span class="pre">data</span></code> is a NumPy array.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fancytypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ft</span>
+
+<span class="c1"># This ctypes struct is equivalent to the one above</span>
+<span class="nd">@ft</span><span class="o">.</span><span class="n">cstruct</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Station</span><span class="p">:</span>
+    <span class="n">longitude</span> <span class="p">:</span> <span class="n">ft</span><span class="o">.</span><span class="n">real64</span>
+    <span class="n">latitude</span> <span class="p">:</span> <span class="n">ft</span><span class="o">.</span><span class="n">real64</span>
+    <span class="n">elevation</span> <span class="p">:</span> <span class="n">ft</span><span class="o">.</span><span class="n">real64</span>
+    <span class="n">network</span> <span class="p">:</span> <span class="n">ft</span><span class="o">.</span><span class="n">character</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">station</span> <span class="p">:</span> <span class="n">ft</span><span class="o">.</span><span class="n">character</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">operational</span> <span class="p">:</span> <span class="n">ft</span><span class="o">.</span><span class="n">logical</span>
+
+<span class="c1"># We load the library first</span>
+<span class="n">library</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_library</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="c1"># Now we can interface any procedure we need</span>
+<span class="n">library</span><span class="o">.</span><span class="n">do_something</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="n">Station</span><span class="p">),</span> 
+                                    <span class="n">ft</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">real64</span><span class="p">),</span>
+                                    <span class="n">ft</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span>
+                                    <span class="n">returns</span><span class="o">=</span><span class="n">ft</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="c1"># Create some empty dummy variables</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">nsamp</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="n">station</span> <span class="o">=</span> <span class="n">Station</span><span class="p">()</span>    
+
+<span class="c1"># Call the procedure</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">do_something</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">ft</span><span class="o">.</span><span class="n">real64</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">nsamp</span><span class="p">)</span>
+
+<span class="c1"># If &quot;data&quot; is always a NumPy array, we can rely on their API instead</span>
+<span class="n">library</span><span class="o">.</span><span class="n">do_something</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="n">Station</span><span class="p">),</span> 
+                                    <span class="n">ft</span><span class="o">.</span><span class="n">nparray</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">real64</span><span class="p">),</span> <span class="c1"># nparray instead of pointer</span>
+                                    <span class="n">ft</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span>
+                                    <span class="n">returns</span><span class="o">=</span><span class="n">ft</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="c1"># The call will now look cleaner but less explicit</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">do_something</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">nsamp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is important to note that <strong>ctypes will always try to make any necessary 
+type conversions</strong>, such as passing a pointer even if we make the call using 
+the variable. This happens in the example above when we pass <code class="code docutils literal notranslate"><span class="pre">station</span></code> 
+instead of <code class="code docutils literal notranslate"><span class="pre">ft.cpointer(station)</span></code>. NumPy arrays require us to go through 
+the <code class="code docutils literal notranslate"><span class="pre">array</span></code> method of the corresponding type class unless we rely on the 
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.ctypeslib</span></code> API.</p>
+<dl class="py class" id="docu">
+<dt class="sig sig-object py" id="fancytypes.sharedlib.SharedLibrary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SharedLibrary</span></span><a class="reference internal" href="_modules/fancytypes/sharedlib.html#SharedLibrary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.sharedlib.SharedLibrary" title="Link to this definition"></a></dt>
+<dd><p>Class to store loaded shared libraries and their interfaces. Use the 
+<a class="reference internal" href="#fancytypes.sharedlib.load" title="fancytypes.sharedlib.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">load()</span></code></a> function to load them. Any <strong>procedures from the library 
+must first be explicitly interfaced to make them callable</strong> from Python. 
+Interfaces can be built by <strong>assigning a two-tuple containing argument and 
+return types to an attribute with the same name as the procedure</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">library</span><span class="o">&gt;.&lt;</span><span class="n">procedure</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">((</span><span class="o">&lt;</span><span class="n">arg_type_1</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">arg_type_n</span><span class="o">&gt;</span><span class="p">),</span> <span class="o">&lt;</span><span class="n">res_type</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use the <a class="reference internal" href="#fancytypes.sharedlib.interface" title="fancytypes.sharedlib.interface"><code class="xref py py-func docutils literal notranslate"><span class="pre">interface()</span></code></a> function to make the right side more readable. 
+These <strong>assigned attributes are callable</strong> and will run the procedure after 
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">ctypes</span></code> does the corresponding checks and attempts to make any 
+necessary conversions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">res</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">library</span><span class="o">&gt;.&lt;</span><span class="n">procedure</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">arg_1</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">arg_n</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Procedures can have <code class="code docutils literal notranslate"><span class="pre">void</span></code> returns if <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> is assigned as 
+return type on the interface.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Procedure interfaces are not guaranteed to match on both sides, and 
+there is no way to check for it. Users are responsible of ensuring the 
+arguments declared are correct for proper functionality. Wrong 
+interfaces will result in unintended behaviour at best and are likely 
+to crash the Python interpreter.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fancytypes.sharedlib.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancytypes/sharedlib.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.sharedlib.load" title="Link to this definition"></a></dt>
+<dd><p>Return a <a class="reference internal" href="#fancytypes.sharedlib.SharedLibrary" title="fancytypes.sharedlib.SharedLibrary"><code class="xref py py-class docutils literal notranslate"><span class="pre">SharedLibrary</span></code></a> instance that stores a loaded shared 
+library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code>) – Path to shared library</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Loaded shared library</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#fancytypes.sharedlib.SharedLibrary" title="fancytypes.sharedlib.SharedLibrary"><code class="xref py py-class docutils literal notranslate"><span class="pre">SharedLibrary</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fancytypes.sharedlib.interface">
+<span class="sig-name descname"><span class="pre">interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancytypes/sharedlib.html#interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fancytypes.sharedlib.interface" title="Link to this definition"></a></dt>
+<dd><p>Helper function to declare procedure interfaces on instances of 
+<a class="reference internal" href="#fancytypes.sharedlib.SharedLibrary" title="fancytypes.sharedlib.SharedLibrary"><code class="xref py py-class docutils literal notranslate"><span class="pre">SharedLibrary</span></code></a> in a more readable way.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="p">((</span><span class="o">&lt;</span><span class="n">arg_type_1</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">arg_type_n</span><span class="o">&gt;</span><span class="p">),</span> <span class="o">&lt;</span><span class="n">res_type</span><span class="o">&gt;</span><span class="p">)</span>
+                               <span class="o">|</span>
+                               <span class="n">V</span>
+<span class="n">interface</span><span class="p">(</span><span class="o">&lt;</span><span class="n">arg_type_1</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">arg_type_2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=&lt;</span><span class="n">res_type</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Argument types</p></li>
+<li><p><strong>returns</strong> – Return type, default is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LibraryError</span></span><a class="reference internal" href="_modules/fancytypes/sharedlib.html#LibraryError"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Exception raised by the package for issues related to shared libraries.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="structure.html" class="btn btn-neutral float-left" title="Structures and unions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, hlatorrec.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
