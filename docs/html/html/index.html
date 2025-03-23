@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FancyTypes - Shared libraries in a fancy way &mdash; FancyTypes 0.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=37f418d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Why use shared libraries" href="whyshared.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #734f96" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            FancyTypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Before we start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="whyshared.html">Why shared libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling libraries</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic.html">Basic types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Structures and unions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Library interfaces</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hlatorrec/fancy-ctypes/blob/main/LICENSE">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #734f96" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">FancyTypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">FancyTypes - Shared libraries in a fancy way</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fancytypes-shared-libraries-in-a-fancy-way">
+<span id="module-fancytypes"></span><h1>FancyTypes - Shared libraries in a fancy way<a class="headerlink" href="#fancytypes-shared-libraries-in-a-fancy-way" title="Link to this heading"></a></h1>
+<p>The <a class="reference external" href="https://github.com/hlatorrec/fancy-ctypes">fancytypes</a> package is a 
+<a class="reference external" href="https://docs.python.org/3/library/ctypes.html">ctypes</a> wrapper. It provides 
+<strong>syntax sugar that makes it easier to include C and Fortran code in your 
+Python projects</strong> through the use of shared libraries.</p>
+<div class="hint admonition">
+<p class="admonition-title">What is a shared library</p>
+<p>Shared libraries, also called binaries, are <strong>executable code that can be 
+used by another program</strong>. The <a class="reference external" href="https://en.wikipedia.org/wiki/Shared_library">Wikipedia</a> article covers them in 
+more detail.</p>
+</div>
+<p>FancyTypes makes your interfaces to shared libraries simpler and clearer. 
+<strong>Calling functions becomes very straightforward and working with arrays is now 
+very easy</strong>.</p>
+<p>This package assumes that <strong>the user already knows some Python and has some 
+basic programming experience in lower level languages</strong> so that they can more 
+easily dive into the world of language interoperability. This is likely the 
+case for anyone who has already compiled and run some small program written in 
+C or even Fortran (2003+ standard, not 77 or any similar abominations, though 
+the later can be salvaged, sometimes).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users who already have some experience with language interoperability may 
+skip directly to the documentation section, which describes the API.</p>
+</div>
+<section id="beginner-tools">
+<h2>Beginner tools<a class="headerlink" href="#beginner-tools" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="whyshared.html#whyshared"><span class="std std-ref">Why use shared libraries</span></a> - <em>Do you need them?</em></p></li>
+<li><p><a class="reference internal" href="compiling.html#compiling"><span class="std std-ref">Compiling a shared library</span></a> - <em>It’s not that hard</em></p></li>
+</ul>
+</section>
+<section id="api-description">
+<h2>API description<a class="headerlink" href="#api-description" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="basic.html#basic"><span class="std std-ref">Basic types</span></a> - <em>Available types</em></p></li>
+<li><p><a class="reference internal" href="structure.html#structure"><span class="std std-ref">Structures and unions</span></a> - <em>User defined types</em></p></li>
+<li><p><a class="reference internal" href="interface.html#interface"><span class="std std-ref">Library interfaces</span></a> - <em>Building interfaces</em></p></li>
+</ul>
+</section>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="whyshared.html" class="btn btn-neutral float-right" title="Why use shared libraries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, hlatorrec.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
