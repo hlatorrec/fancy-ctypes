@@ -47,6 +47,6 @@ import fancytypes as ft
 
 The package is intended to be platform agnostic, although shared libraries are not. This is a tool that interfaces those libraries with Python, but users still need to build them first however they want.
 
-### Usage example in another packages
+### Usage example in other packages
 
 An interface to C sources was built for the [KVP](https://github.com/B-CSI/kvp) package using FancyTypes. See [kvp/lib/__init__.py](https://github.com/B-CSI/kvp/blob/main/kvp/lib/__init__.py) and [kvp/callers.py](https://github.com/B-CSI/kvp/blob/main/kvp/callers.py) in particular.
