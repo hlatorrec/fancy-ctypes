@@ -49,4 +49,4 @@ The package is intended to be platform agnostic, although shared libraries are n
 
 ### Usage example in another packages
 
-An interface to C sources was built for the [KVP](https://github.com/B-CSI/kvp) package using FancyTypes. See [kvp/lib/__init__.py](https://github.com/B-CSI/kvp/blob/main/kvp/lib/__init__.py) in particular.
+An interface to C sources was built for the [KVP](https://github.com/B-CSI/kvp) package using FancyTypes. See [kvp/lib/__init__.py](https://github.com/B-CSI/kvp/blob/main/kvp/lib/__init__.py) and [kvp/callers.py](https://github.com/B-CSI/kvp/blob/main/kvp/callers.py) in particular.
